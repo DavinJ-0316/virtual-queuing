@@ -1,10 +1,16 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import signUp from "../../../../apis/signUp";
 import FormElement from "../../../../components/FormElement";
 import Input from "../../../../components/Input";
 import NakedButton from "../../../../components/NakedButton";
 import PasswordInputElement from "../../../../components/PasswordInputElement";
+import useTouchedState from "../../../../hooks/useTouchedState";
+import { AuthenticationContext } from "../../../Authentication";
+import getEmailErrorMessage from "./utils/getEmailErrorMessage";
+import getPasswordErrorMessage from "./utils/getPasswordErrorMessage";
+import getRepeatPasswordErrorMessage from "./utils/getRepeatPasswordErrorMessage";
 
 const Login = styled.a`
   text-decoration: none;
@@ -18,49 +24,67 @@ const SignUp = styled(NakedButton)`
   background: #77A48E;
   color: white;
   padding: 10px 12px;
+
+  &:disabled {
+    cursor: not-allowed;
+    filter: grayscale(80%);
+  }
 `
 
-const SignUpForm = ({
-  setPathname,
-  setAuthenticated,
-}) => {
-  const [emailOrPhoneNo, setEmailOrPhoneNo] = useState()
-  const [password, setPassword] = useState()
-  const [repeatPassword, setRepeatPassword] = useState()
+const ServerError = styled.div`
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: white;
+  background-color: rgb(244, 67, 54);
+  margin: 32px 0;
+`;
+
+const SignUpForm = () => {
+  const authentication = useContext(AuthenticationContext)
+  const navigate = useNavigate()
+
+  const [email, setEmail] = useTouchedState()
+  const [password, setPassword] = useTouchedState()
+  const [repeatPassword, setRepeatPassword] = useTouchedState()
+
+  const emailErrorMessage = getEmailErrorMessage(email.value)
+  const passwordErrorMessage = getPasswordErrorMessage(password.value)
+  const repeatPasswordErrorMessage = getRepeatPasswordErrorMessage(repeatPassword.value, password.value)
+
+  const [serverErrorResponse, setServerErrorResponse] = useState()
 
   return (
     <form
       onSubmit={(event) => {
         event.preventDefault()
 
-        signUp({ emailOrPhoneNo, password })
-          // .then((res) => {
-          //   const jwt = res.headers['X-Auth-Token'.toLowerCase()]
-
-          //   // state (memory) -> 重新加载，刷新之后数据会消失，非持久化存储 
-          //   // Persistence 持久化 即把数据（如内存中的对象）保存到可永久保存的存储设备中（如磁盘
-          //   // localStorage, cookie, sessionStorage
-
-          //   localStorage.setItem('authToken', jwt)
-          // })
-          .then(() => setAuthenticated(true))
-          .then(() => setPathname('/'))
+        signUp({ email: email.value, password: password.value })
+          .then(() => {
+            authentication.setAuthenticated(true)
+            navigate('/')
+          })
+          .catch((error) => setServerErrorResponse(error.response))
       }}
     >
-      <FormElement>
+      {serverErrorResponse?.status === 409 && (
+        <ServerError>Email already exists, please use another one.</ServerError>
+      )}
+      <FormElement errorMessage={email.touched && emailErrorMessage}>
         <Input
-          value={emailOrPhoneNo}
-          onChange={(event) => setEmailOrPhoneNo(event.target.value)}
-          placeholder="Enter Email / Phone No"
+          value={email.value}
+          onChange={(event) => setEmail(event.target.value)}
+          placeholder="Enter Email"
         />
       </FormElement>
       <PasswordInputElement
-        value={password}
+        errorMessage={password.touched && passwordErrorMessage}
+        value={password.value}
         onChange={(event) => setPassword(event.target.value)}
         placeholder="Password"
       />
       <PasswordInputElement
-        value={repeatPassword}
+        errorMessage={repeatPassword.touched && repeatPasswordErrorMessage}
+        value={repeatPassword.value}
         onChange={(event) => setRepeatPassword(event.target.value)}
         placeholder="Repeat Password"
       />
@@ -68,7 +92,10 @@ const SignUpForm = ({
         <Login href="/">Already have an account?</Login>
       </FormElement>
       <FormElement>
-        <SignUp type="submit">
+        <SignUp
+          disabled={emailErrorMessage || passwordErrorMessage || repeatPasswordErrorMessage}
+          type="submit"
+        >
           Sign up
         </SignUp>
       </FormElement>

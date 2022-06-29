@@ -11,7 +11,7 @@ const Wrapper = styled.div`
 
 const Face = styled.img``
 
-const EmailOrPhoneNo = styled.div`
+const Email = styled.div`
   font-weight: 500;
   margin: 0 24px;
 `
@@ -19,7 +19,7 @@ const EmailOrPhoneNo = styled.div`
 const UserInfo = () => (
   <Wrapper>
     <Face alt="Avatar" src={face} />
-    <EmailOrPhoneNo>zlong@outlook.com</EmailOrPhoneNo>
+    <Email>zlong@outlook.com</Email>
     <NakedButton type="button">
       <FontAwesomeIcon icon={faChevronDown} />
     </NakedButton>

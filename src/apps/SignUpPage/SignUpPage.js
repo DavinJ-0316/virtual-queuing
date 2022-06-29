@@ -1,5 +1,7 @@
+import { useContext } from 'react';
 import styled from 'styled-components'
 import Logo from '../../components/Logo';
+import AuthenticationContext from '../Authentication/AuthenticationContext';
 import SignUpForm from "./components/SignUpForm"
 
 const Wrapper = styled.div`
@@ -37,17 +39,14 @@ const SubTitle = styled.p`
   color: #666666;
 `;
 
-const SignUpPage = ({
-  setPathname,
-  setAuthenticated,
-}) => (
+const SignUpPage = () => (
   <Wrapper>
     <Container>
       <Header>
         <Title>Agent Sign up</Title>
         <SubTitle>Hey, Enter your details to get sign up an new account</SubTitle>
       </Header>
-      <SignUpForm setPathname={setPathname} setAuthenticated={setAuthenticated} />
+      <SignUpForm />
       <Footer>
         <Logo />
       </Footer>

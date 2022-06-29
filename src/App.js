@@ -1,27 +1,18 @@
-import SignUpPage from "./apps/SignUpPage";
+import { BrowserRouter } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import Authentication from "./apps/Authentication";
 import QueueListPage from "./apps/QueueListPage";
-import { useEffect, useState } from "react";
+import SignUpPage from "./apps/SignUpPage";
 
-const App = () => {
-  const [pathname, setPathname] = useState(window.location.pathname)
-  const [authenticated, setAuthenticated] = useState(false)
-
-  useEffect(() => {
-    window.history.pushState(undefined, undefined, pathname)
-  }, [pathname])
-
-  const route = {
-    '/auth/sign-up': (<SignUpPage setPathname={setPathname} setAuthenticated={setAuthenticated} />),
-    '/': (<QueueListPage setPathname={setPathname} authenticated={authenticated} />),
-  }
-
-  return (
-    <>
-      <button onClick={() => setPathname('/')}>/</button>
-      <button onClick={() => setPathname('/auth/sign-up')}>/auth/sign-up</button>
-      {route[pathname] || `${pathname} 404`}
-    </>
-  )
-}
+const App = () => (
+  <BrowserRouter>
+    <Authentication>
+      <Routes>
+        <Route path="/auth/sign-up" element={<SignUpPage />} />
+        <Route path="/" element={<QueueListPage />} />
+      </Routes>
+    </Authentication>
+  </BrowserRouter>
+)
 
 export default App;

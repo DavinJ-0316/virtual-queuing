@@ -1,10 +1,10 @@
 import API from "../../libs/API";
 
 const signUp = ({
-  emailOrPhoneNo,
+  email,
   password
 }) => API.post('/auth/sign-up', {
-  email: emailOrPhoneNo,
+  email,
   password,
 })
 

@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import ErrorMessage from './components/ErrorMessage';
 
 const Wrapper = styled.div`
   & ~ & {
@@ -6,7 +7,7 @@ const Wrapper = styled.div`
   }
 
   position: relative;
-`;
+`
 
 const Suffix = styled.div`
   position: absolute;
@@ -19,11 +20,13 @@ const Suffix = styled.div`
 
 const FormElement = ({
   suffix,
+  errorMessage,
   children,
 }) => (
   <Wrapper>
     {children}
     {suffix && (<Suffix>{suffix}</Suffix>)}
+    {errorMessage && (<ErrorMessage>{errorMessage}</ErrorMessage>)}
   </Wrapper>
 )
 

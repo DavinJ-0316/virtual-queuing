@@ -4,6 +4,7 @@ import Input from "../Input";
 import PasswordVisibilityToggle from "./components/PasswordVisibilityToggle";
 
 const PasswordInputElement = ({
+  errorMessage,
   value,
   onChange,
   placeholder,
@@ -11,7 +12,10 @@ const PasswordInputElement = ({
   const [passwordVisible, setPasswordVisible] = useState(false)
 
   return (
-    <FormElement suffix={(<PasswordVisibilityToggle visible={passwordVisible} onToggle={setPasswordVisible} />)}>
+    <FormElement
+      errorMessage={errorMessage}
+      suffix={(<PasswordVisibilityToggle visible={passwordVisible} onToggle={setPasswordVisible} />)}
+    >
       <Input
         value={value}
         onChange={onChange}
