@@ -7,7 +7,7 @@ test('renders title, subtitle, sign up form, and logo', () => {
   expect(screen.getByText('Agent Sign up')).toBeInTheDocument()
   expect(screen.getByText('Hey, Enter your details to get sign up an new account')).toBeInTheDocument()
 
-  expect(screen.getByPlaceholderText('Enter Email / Phone No')).toBeInTheDocument()
+  expect(screen.getByPlaceholderText('Enter Email')).toBeInTheDocument()
   expect(screen.getByPlaceholderText('Password')).toBeInTheDocument()
   expect(screen.getByPlaceholderText('Repeat Password')).toBeInTheDocument()
   expect(screen.getByRole('link', { name: 'Already have an account?' })).toBeInTheDocument()
