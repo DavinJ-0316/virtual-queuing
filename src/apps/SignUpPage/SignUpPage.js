@@ -1,7 +1,5 @@
-import { useContext } from 'react';
 import styled from 'styled-components'
 import Logo from '../../components/Logo';
-import AuthenticationContext from '../Authentication/AuthenticationContext';
 import SignUpForm from "./components/SignUpForm"
 
 const Wrapper = styled.div`
