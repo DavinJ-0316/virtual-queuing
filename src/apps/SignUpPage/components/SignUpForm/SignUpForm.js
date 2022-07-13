@@ -59,7 +59,10 @@ const SignUpForm = () => {
         event.preventDefault()
 
         signUp({ email: email.value, password: password.value })
-          .then(() => navigate('/'))
+          .then(() => {
+            authentication.setAuthenticated(true)
+            navigate('/')
+          })
           .catch((error) => setServerErrorResponse(error.response))
       }}
     >
