@@ -3,7 +3,7 @@ import SideMenu from './components/SideMenu'
 import Main from './components/Main'
 import { useContext } from "react"
 import { AuthenticationContext } from "../Authentication"
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   min-height: 100vh;
@@ -12,7 +12,6 @@ const Wrapper = styled.div`
 `
 
 const QueueListPage = () => {
-  const navigate = useNavigate()
   const authentication = useContext(AuthenticationContext)
 
 
@@ -21,9 +20,7 @@ const QueueListPage = () => {
   }
 
   if (!authentication.authenticated) {
-    navigate('/auth/sign-up')
-
-    return null
+    return <Navigate to="/auth/sign-up" />
   }
 
   return (

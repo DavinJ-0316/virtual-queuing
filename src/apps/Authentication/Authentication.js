@@ -12,15 +12,9 @@ const Authentication = ({
 
   useEffect(() => {
     getAuthenticatedUser()
-      .then(() => {
-        setAuthenticated(true)
-      })
-      .catch(() => {
-        setAuthenticated(false)
-      })
-      .finally(() => {
-        setLoading(false)
-      })
+      .then(() => setAuthenticated(true))
+      .catch(() => setAuthenticated(false))
+      .finally(() => setLoading(false))
   }, [])
 
   return (
